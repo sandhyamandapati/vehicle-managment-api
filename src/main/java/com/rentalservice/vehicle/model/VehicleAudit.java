@@ -4,6 +4,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import java.sql.Date;
 
 @Entity
 public class VehicleAudit {
@@ -15,6 +16,18 @@ public class VehicleAudit {
     private long userID;
     private boolean flag;
     private String operation;
+    private Date date;
+
+    public Date getDate() {
+        return date;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
+    }
+
+
+
 
     public String getOperation() {
         return operation;

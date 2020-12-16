@@ -45,20 +45,32 @@ public class VehicleController {
         return vehicleRepository.save(vehicle);
     }
 
-    @PutMapping("/updateVehicle/{id}")
+    @PutMapping("/vehicles/{id}")
     public ResponseEntity < Vehicle > updateVehicle(@PathVariable(value = "id") Long vehicleId,
-                                                      @Valid @RequestBody Vehicle vehicleDetails) throws ResourceNotFoundException {
+                                                    @Valid @RequestBody Vehicle vehicleDetails) throws ResourceNotFoundException {
         Vehicle vehicle = vehicleRepository.findById(vehicleId)
                 .orElseThrow(() -> new ResourceNotFoundException("vehicle not found for this id :: " + vehicleId));
 
         vehicle.setVehicleName(vehicleDetails.getVehicleName());
         vehicle.setDescription(vehicleDetails.getDescription());
         vehicle.setDate(vehicleDetails.getDate());
-         Vehicle updatedVehicle = vehicleRepository.save(vehicle);
+        final Vehicle updatedVehicle = vehicleRepository.save(vehicle);
+
+        VehicleAudit vehicleAudit = new VehicleAudit();
+        vehicleAudit.setUserID(vehicle.getUser().getUserID());
+        vehicleAudit.setVehicleID(vehicle.getVehicleID());
+        vehicleAudit.setFlag(true);
+        vehicleAudit.setOperation(vehicleDetails.getDescription());
+        long millis=System.currentTimeMillis();
+        java.sql.Date date=new java.sql.Date(millis);;
+        vehicleAudit.setDate(date);
+        vehicleAuditRepository.save(vehicleAudit);
+
+
         return ResponseEntity.ok(updatedVehicle);
     }
 
-    @DeleteMapping("/deleteVehicle/{id}")
+    @DeleteMapping("/vehicles/{id}")
     public Map< String, Boolean > deleteVehicle(@PathVariable(value = "id") Long vehicleId)
             throws ResourceNotFoundException {
         Vehicle vehicle = vehicleRepository.findById(vehicleId)
@@ -70,7 +82,7 @@ public class VehicleController {
         return response;
     }
 
-    @PutMapping("/assignVehicleToUser/{vehicleId}/{userId}")
+    @PutMapping("/vehicle/{vehicleId}/{userId}")
     public ResponseEntity < Vehicle > assignVehicleToUser(@PathVariable(value = "vehicleId") long vehicleId,@PathVariable(value = "userId") long userId) throws ResourceNotFoundException{
         Vehicle vehicle = vehicleRepository.findById(vehicleId)
                 .orElseThrow(() -> new ResourceNotFoundException("vehicle not found for this id :: " + vehicleId));
@@ -78,30 +90,41 @@ public class VehicleController {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new ResourceNotFoundException("user not found for this id :: " + userId));
         vehicle.setUser(user);
-         Vehicle updatedVehicle = vehicleRepository.save(vehicle);
+        Vehicle updatedVehicle = vehicleRepository.save(vehicle);
+
+        VehicleAudit vehicleAudit = new VehicleAudit();
+        vehicleAudit.setUserID(user.getUserID());
+        vehicleAudit.setVehicleID(vehicle.getVehicleID());
+        vehicleAudit.setFlag(true);
+        vehicleAudit.setOperation("vehicle is assgined to user");
+
+        long millis=System.currentTimeMillis();
+        java.sql.Date date=new java.sql.Date(millis);;
+        vehicleAudit.setDate(date);
+        vehicleAuditRepository.save(vehicleAudit);
         return ResponseEntity.ok(updatedVehicle);
     }
 
     @PutMapping("/transferingOwnershipToNewUser/{vehicleId}/{userId}")
     public ResponseEntity < Vehicle > transferingOwnershipToNewUser(@PathVariable(value = "vehicleId") long vehicleId,
                                                                     @PathVariable(value = "userId") long userId) throws ResourceNotFoundException{
-        Vehicle vehicle = vehicleRepository.findById(vehicleId)
+        Vehicle vehicle =git add vehicleRepository.findById(vehicleId)
                 .orElseThrow(() -> new ResourceNotFoundException("vehicle not found for this id :: " + vehicleId));
 
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new ResourceNotFoundException("user not found for this id :: " + userId));
 
-//        Vehicle updatedVehicle = vehicleRepository.save(vehicle);
-//        return ResponseEntity.ok(updatedVehicle);
-
         vehicle.setUser(user);
 
-        Vehicle updatedVehicle = vehicleRepository.save(vehicle);
+        final Vehicle updatedVehicle = vehicleRepository.save(vehicle);
         VehicleAudit vehicleAudit = new VehicleAudit();
         vehicleAudit.setUserID(user.getUserID());
         vehicleAudit.setVehicleID(vehicle.getVehicleID());
         vehicleAudit.setFlag(true);
-        vehicleAudit.setOperation("vehicle is transfered to new user");
+        vehicleAudit.setOperation("vehicle transfered to new user");
+        long millis=System.currentTimeMillis();
+        java.sql.Date date=new java.sql.Date(millis);;
+        vehicleAudit.setDate(date);
         vehicleAuditRepository.save(vehicleAudit);
 
         return ResponseEntity.ok(updatedVehicle);
