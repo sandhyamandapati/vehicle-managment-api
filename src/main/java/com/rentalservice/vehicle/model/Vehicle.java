@@ -1,16 +1,19 @@
 package com.rentalservice.vehicle.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.rentalservice.user.model.User;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Date;
 
 
 @Entity
-public class Vehicle {
+public class Vehicle implements Serializable {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long vehicleID;
     private String vehicleName;
     private String brand;
@@ -23,6 +26,7 @@ public class Vehicle {
     @JoinColumn(name="user_id")
     private User user;
 
+    @JsonBackReference
     public User getUser() {
         return user;
     }

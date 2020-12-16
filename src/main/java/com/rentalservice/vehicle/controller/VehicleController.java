@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.sql.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -45,7 +46,7 @@ public class VehicleController {
         return vehicleRepository.save(vehicle);
     }
 
-    @PutMapping("/vehicles/{id}")
+    @PutMapping("/updateVehicle/{id}")
     public ResponseEntity < Vehicle > updateVehicle(@PathVariable(value = "id") Long vehicleId,
                                                     @Valid @RequestBody Vehicle vehicleDetails) throws ResourceNotFoundException {
         Vehicle vehicle = vehicleRepository.findById(vehicleId)
@@ -56,13 +57,13 @@ public class VehicleController {
         vehicle.setDate(vehicleDetails.getDate());
         final Vehicle updatedVehicle = vehicleRepository.save(vehicle);
 
+
         VehicleAudit vehicleAudit = new VehicleAudit();
         vehicleAudit.setUserID(vehicle.getUser().getUserID());
         vehicleAudit.setVehicleID(vehicle.getVehicleID());
-        vehicleAudit.setFlag(true);
         vehicleAudit.setOperation(vehicleDetails.getDescription());
         long millis=System.currentTimeMillis();
-        java.sql.Date date=new java.sql.Date(millis);;
+        Date date=new Date(millis);;
         vehicleAudit.setDate(date);
         vehicleAuditRepository.save(vehicleAudit);
 
@@ -70,7 +71,7 @@ public class VehicleController {
         return ResponseEntity.ok(updatedVehicle);
     }
 
-    @DeleteMapping("/vehicles/{id}")
+    @DeleteMapping("/deleteVehicle/{id}")
     public Map< String, Boolean > deleteVehicle(@PathVariable(value = "id") Long vehicleId)
             throws ResourceNotFoundException {
         Vehicle vehicle = vehicleRepository.findById(vehicleId)
@@ -82,7 +83,7 @@ public class VehicleController {
         return response;
     }
 
-    @PutMapping("/vehicle/{vehicleId}/{userId}")
+    @PutMapping("/assignVehicleToUser/{vehicleId}/{userId}")
     public ResponseEntity < Vehicle > assignVehicleToUser(@PathVariable(value = "vehicleId") long vehicleId,@PathVariable(value = "userId") long userId) throws ResourceNotFoundException{
         Vehicle vehicle = vehicleRepository.findById(vehicleId)
                 .orElseThrow(() -> new ResourceNotFoundException("vehicle not found for this id :: " + vehicleId));
@@ -95,11 +96,10 @@ public class VehicleController {
         VehicleAudit vehicleAudit = new VehicleAudit();
         vehicleAudit.setUserID(user.getUserID());
         vehicleAudit.setVehicleID(vehicle.getVehicleID());
-        vehicleAudit.setFlag(true);
         vehicleAudit.setOperation("vehicle is assgined to user");
 
         long millis=System.currentTimeMillis();
-        java.sql.Date date=new java.sql.Date(millis);;
+        Date date=new Date(millis);;
         vehicleAudit.setDate(date);
         vehicleAuditRepository.save(vehicleAudit);
         return ResponseEntity.ok(updatedVehicle);
@@ -108,7 +108,7 @@ public class VehicleController {
     @PutMapping("/transferingOwnershipToNewUser/{vehicleId}/{userId}")
     public ResponseEntity < Vehicle > transferingOwnershipToNewUser(@PathVariable(value = "vehicleId") long vehicleId,
                                                                     @PathVariable(value = "userId") long userId) throws ResourceNotFoundException{
-        Vehicle vehicle =git add vehicleRepository.findById(vehicleId)
+        Vehicle vehicle = vehicleRepository.findById(vehicleId)
                 .orElseThrow(() -> new ResourceNotFoundException("vehicle not found for this id :: " + vehicleId));
 
         User user = userRepository.findById(userId)
@@ -120,10 +120,9 @@ public class VehicleController {
         VehicleAudit vehicleAudit = new VehicleAudit();
         vehicleAudit.setUserID(user.getUserID());
         vehicleAudit.setVehicleID(vehicle.getVehicleID());
-        vehicleAudit.setFlag(true);
         vehicleAudit.setOperation("vehicle transfered to new user");
         long millis=System.currentTimeMillis();
-        java.sql.Date date=new java.sql.Date(millis);;
+        Date date=new Date(millis);;
         vehicleAudit.setDate(date);
         vehicleAuditRepository.save(vehicleAudit);
 

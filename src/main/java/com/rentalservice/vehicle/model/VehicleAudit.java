@@ -14,7 +14,6 @@ public class VehicleAudit {
     private long vehicleAuditID;
     private long vehicleID;
     private long userID;
-    private boolean flag;
     private String operation;
     private Date date;
 
@@ -25,9 +24,6 @@ public class VehicleAudit {
     public void setDate(Date date) {
         this.date = date;
     }
-
-
-
 
     public String getOperation() {
         return operation;
@@ -61,11 +57,5 @@ public class VehicleAudit {
         this.userID = userID;
     }
 
-    public boolean isFlag() {
-        return flag;
-    }
 
-    public void setFlag(boolean flag) {
-        this.flag = flag;
-    }
 }
