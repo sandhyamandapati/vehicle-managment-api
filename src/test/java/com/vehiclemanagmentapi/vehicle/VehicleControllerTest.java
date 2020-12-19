@@ -61,6 +61,7 @@ public class VehicleControllerTest {
     public void getAllVehiclesTest() throws Exception{
         List<Vehicle> vehicles = new ArrayList<Vehicle>();
         Vehicle vehicle = new Vehicle();
+        vehicle.setVehicleID(1);
         vehicle.setVehicleName("car");
         vehicle.setModel("Tayota");
         vehicle.setBrand("Tata");
@@ -75,8 +76,7 @@ public class VehicleControllerTest {
                     .accept(MediaType.APPLICATION_JSON))
                     .andDo(print())
                     .andExpect(status().isOk())
-                    .andExpect(MockMvcResultMatchers.jsonPath("$.vehicles").exists())
-                    .andExpect(MockMvcResultMatchers.jsonPath("$.vehicles[*].vehicleId").isNotEmpty());
+                    .andExpect(MockMvcResultMatchers.jsonPath("$.vehicles").value(vehicles));
 
     }
 

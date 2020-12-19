@@ -24,26 +24,25 @@ public class UserController {
     }
 
     @GetMapping("/user/{userId}")
-    public ResponseEntity< User > getVehicleById(@PathVariable(value = "userId") int userId)
+    public ResponseEntity< User > getUsereById(@PathVariable(value = "userId") int userId)
             throws ResourceNotFoundException {
         User user = userService.getUserById(userId);
         return ResponseEntity.ok().body(user);
     }
 
     @PostMapping("/saveUser")
-    public ResponseEntity < User > createVechicle(@Valid @RequestBody User user) {
+    public ResponseEntity < User > saveUser(@Valid @RequestBody User user) {
         return new ResponseEntity<>(userService.saveUser(user), HttpStatus.CREATED);
     }
 
-
-    @PutMapping("/updateUser}")
+    @PutMapping("/updateUser")
     public ResponseEntity < User > updateUser(@Valid @RequestBody User userDetails) throws ResourceNotFoundException {
       User updatedUser = userService.updateUser(userDetails);
       return ResponseEntity.ok(updatedUser);
     }
 
     @DeleteMapping("/deleteUser/{userId}")
-    public ResponseEntity<HttpStatus> deleteVehicle(@PathVariable(value = "userId") int userId)
+    public ResponseEntity<HttpStatus> deleteUser(@PathVariable(value = "userId") int userId)
             throws ResourceNotFoundException {
         userService.deleteUser(userId);
         return new ResponseEntity<>(HttpStatus.ACCEPTED);

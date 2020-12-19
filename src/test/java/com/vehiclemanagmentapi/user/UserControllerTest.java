@@ -75,6 +75,7 @@ public class UserControllerTest {
         user.setUserID(2);
         user.setFirstName("sandhya");
         user.setAddress("Melborne,australia");
+        user.setLicenceID("dfghjk");
         when(userService.updateUser(any(User.class))).thenReturn(user);
 
         mockMvc.perform(put("/api/user/v1/updateUser")

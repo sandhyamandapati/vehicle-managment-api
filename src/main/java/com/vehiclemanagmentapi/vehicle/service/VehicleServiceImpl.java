@@ -92,7 +92,11 @@ public class VehicleServiceImpl implements VehicleService{
         return user;
     }
 
-
+    private User userExist(int userId) throws ResourceNotFoundException{
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new ResourceNotFoundException("user not found for this id :: " + userId));
+        return user;
+    }
     private VehicleAudit saveAuditRecord(Vehicle vehicle){
         VehicleAudit vehicleAudit = new VehicleAudit();
         vehicleAudit.setUserID(vehicle.getUser().getUserID());

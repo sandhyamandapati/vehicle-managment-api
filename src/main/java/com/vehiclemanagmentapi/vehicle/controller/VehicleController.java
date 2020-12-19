@@ -24,7 +24,7 @@ public class VehicleController {
         return vehicleService.getAllVehicles();
     }
 
-    @GetMapping("/vehicles/{id}")
+    @GetMapping("/vehicle/{id}")
     public ResponseEntity< Vehicle > getVehicleById(@PathVariable(value = "id") int vehicleId)
             throws ResourceNotFoundException {
         Vehicle vehicle = vehicleService.getVehicleById(vehicleId);
