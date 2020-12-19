@@ -2,7 +2,6 @@ package com.rentalservice.vehicle.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.rentalservice.user.model.User;
 
 import javax.persistence.*;
@@ -14,7 +13,7 @@ import java.util.Date;
 public class Vehicle implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long vehicleID;
+    private int vehicleID;
     private String vehicleName;
     private String brand;
     private String model;
@@ -40,7 +39,7 @@ public class Vehicle implements Serializable {
     public Vehicle() {
     }
 
-    public Vehicle(String vehicleName, long vehicleID, String brand, String model, int cost, Date date, String description) {
+    public Vehicle(String vehicleName, int vehicleID, String brand, String model, int cost, Date date, String description) {
         this.vehicleName = vehicleName;
         this.vehicleID = vehicleID;
         this.brand = brand;
@@ -50,7 +49,7 @@ public class Vehicle implements Serializable {
         this.description = description;
     }
 
-    public long getVehicleID() {
+    public int getVehicleID() {
         return vehicleID;
     }
 

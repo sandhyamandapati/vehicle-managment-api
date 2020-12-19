@@ -1,37 +1,34 @@
 package com.rentalservice.user.model;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.rentalservice.vehicle.model.Vehicle;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.*;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 public class User implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long userID;
+    private int userID;
     private String firstName;
     private String lastName;
     @JsonFormat(shape=JsonFormat.Shape.STRING, pattern="dd-MM-yyyy")
     private Date dateOfBirth;
     private String licenceID;
     private String address;
-//    @OneToMany(mappedBy = "user",cascade = {
-//            CascadeType.MERGE,
-//            CascadeType.REFRESH
-//    })
     @OneToMany(mappedBy = "user")
     private Set<Vehicle> vehicles = new HashSet<Vehicle>();
 
-    public void setUserID(long userID) {
+    public void setUserID(int userID) {
         this.userID = userID;
     }
-    public long getUserID() {
+    public int getUserID() {
         return userID;
     }
     @JsonManagedReference

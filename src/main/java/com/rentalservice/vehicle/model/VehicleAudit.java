@@ -11,9 +11,9 @@ public class VehicleAudit {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private long vehicleAuditID;
-    private long vehicleID;
-    private long userID;
+    private int vehicleAuditID;
+    private int vehicleID;
+    private int userID;
     private String operation;
     private Date date;
 
@@ -33,27 +33,27 @@ public class VehicleAudit {
         this.operation = operation;
     }
 
-    public long getVehicleAuditID() {
+    public int getVehicleAuditID() {
         return vehicleAuditID;
     }
 
-    public void setVehicleAuditID(long vehicleAuditID) {
+    public void setVehicleAuditID(int vehicleAuditID) {
         this.vehicleAuditID = vehicleAuditID;
     }
 
-    public long getVehicleID() {
+    public int getVehicleID() {
         return vehicleID;
     }
 
-    public void setVehicleID(long vehicleID) {
+    public void setVehicleID(int vehicleID) {
         this.vehicleID = vehicleID;
     }
 
-    public long getUserID() {
+    public int getUserID() {
         return userID;
     }
 
-    public void setUserID(long userID) {
+    public void setUserID(int userID) {
         this.userID = userID;
     }
 
